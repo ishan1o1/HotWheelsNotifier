@@ -21,7 +21,14 @@ const wishlist = [
     "Pagani",
     "Koenigsegg",
     "Bugatti",
-    "Ford"
+    "Ford",
+    "Pantone",
+    "Lamborghini",
+    "Scuderia",
+    "Formula",
+    "Lotus",
+    "Gordon",
+    "Datsun"
 
 ];
 
