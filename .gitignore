@@ -3,9 +3,12 @@ node_modules/
 
 # Environment variables
 .env
+src/.env
+*.env
 
 # Runtime data
-data/products.json
+data/
+data/*.json
 
 # Logs
 *.log

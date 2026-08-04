@@ -1,5 +1,7 @@
+const http = require("http");
 const cron = require("node-cron");
 
+const config = require("./config");
 const wishlist = require("./wishlist");
 const logger = require("./logger");
 
@@ -9,6 +11,28 @@ const detectChanges = require("./detectChanges");
 
 const { sendMessage } = require("./notifier");
 const { buildWishlistMessage } = require("./templates");
+
+// Lightweight HTTP server for Railway health checks
+const server = http.createServer((req, res) => {
+  if (req.url === "/health" || req.url === "/") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(
+      JSON.stringify({
+        status: "ok",
+        service: "HotWheels Notifier",
+        uptime: process.uptime(),
+        timestamp: new Date().toISOString(),
+      })
+    );
+  } else {
+    res.writeHead(404, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ error: "Not Found" }));
+  }
+});
+
+server.listen(config.port, () => {
+  console.log(`Health check HTTP server listening on port ${config.port}`);
+});
 
 async function checkForNewProducts() {
   await logger.info("Scheduled product check started");
@@ -41,7 +65,9 @@ async function checkForNewProducts() {
   });
 }
 
-cron.schedule("* * * * *", async () => {
+const cronSchedule = config.cronSchedule || "* * * * *";
+
+cron.schedule(cronSchedule, async () => {
   try {
     await checkForNewProducts();
   } catch (err) {
@@ -54,8 +80,7 @@ cron.schedule("* * * * *", async () => {
 
 (async () => {
   try {
-    await logger.info("FirstCry Monitor Started");
-
+    await logger.info(`FirstCry Monitor Started (Cron: ${cronSchedule})`);
     await checkForNewProducts();
   } catch (err) {
     await logger.error("Startup failed", {
