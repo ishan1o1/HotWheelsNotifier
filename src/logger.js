@@ -14,10 +14,30 @@ class Logger {
         });
     }
 
+    fallbackToConsole(level, message, meta = {}) {
+        const consoleMethod = console[level.toLowerCase()] || console.log;
+        const payload = Object.keys(meta).length > 0 ? meta : undefined;
+
+        if (payload) {
+            consoleMethod(message, payload);
+            return;
+        }
+
+        consoleMethod(message);
+    }
+
     async log(level, message, meta = {}) {
+        const normalizedLevel = level.toUpperCase();
+
+        if (!process.env.LOGGER_URL) {
+            this.fallbackToConsole(level, message, meta);
+            // console.warn("Logger fallback: LOGGER_URL is not configured.");
+            return;
+        }
+
         try {
             await this.client.post("/log", {
-                level: level.toUpperCase(),
+                level: normalizedLevel,
                 message,
                 service: "hotwheels-monitor",
                 timestamp: new Date().toISOString(),
@@ -27,7 +47,13 @@ class Logger {
                 },
             });
         } catch (err) {
-            console.error("Logger failed:", err.message);
+            this.fallbackToConsole(level, message, meta);
+            // console.error("Logger failed:", {
+            //     message: err.message,
+            //     code: err.code,
+            //     status: err.response?.status,
+            //     data: err.response?.data,
+            // });
         }
     }
 

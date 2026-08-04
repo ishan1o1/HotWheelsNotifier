@@ -3,6 +3,7 @@ const wishlist = [
     "Porsche",
     "Ferrari",
     "Skyline",
+    "Nissan",
     "GT-R",
     "Supra",
     "Honda",
@@ -27,8 +28,18 @@ const wishlist = [
     "Formula",
     "Lotus",
     "Gordon",
-    "Datsun",
     "Toyota",
+    "Murray",
+    "Prelude",
+    "Civic",
+    "BMW",
+    "Mercedes",
+    "Audi",
+    "Forza",
+    "Aston",
+    "Martin",
+
+
 
 ];
 
