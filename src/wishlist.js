@@ -26,7 +26,6 @@ const wishlist = [
     "Lamborghini",
     "Scuderia",
     "Formula",
-    "Lotus",
     "Gordon",
     "Toyota",
     "Murray",
@@ -38,6 +37,7 @@ const wishlist = [
     "Forza",
     "Aston",
     "Martin",
+    "SLS"
 
 
 
