@@ -65,7 +65,8 @@ async function checkForNewProducts() {
   });
 }
 
-const cronSchedule = config.cronSchedule || "* * * * *";
+const cronSchedule = config.cronSchedule || "*/10 * * * * *";
+
 
 cron.schedule(cronSchedule, async () => {
   try {
