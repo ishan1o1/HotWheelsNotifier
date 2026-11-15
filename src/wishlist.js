@@ -22,7 +22,7 @@ const wishlist = [
     "Pagani",
     "Koenigsegg",
     "Bugatti",
-    "Pantone",
+    "Premium",
     "Lamborghini",
     "Scuderia",
     "Formula",
@@ -37,7 +37,8 @@ const wishlist = [
     "Forza",
     "Aston",
     "Martin",
-    "SLS"
+    "SLS",
+    "F1"
 
 
 
