@@ -4,7 +4,7 @@ const config = require("./config");
 
 const PUBLIC_GROUP = "@CyrusHwAlert";
 
-async function sendMessage(message, chatId = config.telegramChatId) {
+async function sendToChat(message, chatId) {
     try {
         await axios.post(
             `https://api.telegram.org/bot${config.telegramBotToken}/sendMessage`,
@@ -14,19 +14,24 @@ async function sendMessage(message, chatId = config.telegramChatId) {
                 parse_mode: "HTML"
             }
         );
+
+        console.log(`Telegram message sent to ${chatId}`);
+
     } catch (error) {
         console.error(
-            "Telegram notification failed:",
+            `Failed to send to ${chatId}:`,
             error.response?.data || error.message
         );
     }
 }
 
-async function sendPublicMessage(message) {
-    return sendMessage(message, PUBLIC_GROUP);
+async function sendMessage(message) {
+    await Promise.all([
+        sendToChat(message, config.telegramChatId),
+        sendToChat(message, PUBLIC_GROUP)
+    ]);
 }
 
 module.exports = {
-    sendMessage,
-    sendPublicMessage
+    sendMessage
 };
